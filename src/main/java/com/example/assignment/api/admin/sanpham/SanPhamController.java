@@ -1,7 +1,7 @@
-package com.example.assignment.api.admin.kichthuoc;
+package com.example.assignment.api.admin.sanpham;
 
-import com.example.assignment.api.admin.kichthuoc.dto.KichThuocDto;
-import com.example.assignment.services.KichThuocService;
+import com.example.assignment.api.admin.sanpham.dto.SanPhamDto;
+import com.example.assignment.services.SanPhamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/kich-thuoc")
+@RequestMapping(value = "/san-pham")
 @RequiredArgsConstructor
-public class KichThuocController {
+public class SanPhamController {
 
-    private final KichThuocService kichThuocService;
+    private final SanPhamService sanPhamService;
 
     @GetMapping(value = "/test")
     public ResponseEntity<?> test(
             @RequestParam(name = "page", defaultValue = "0") Integer pageParam
     ) {
         Pageable pageable = PageRequest.of(pageParam, 5);
-        Page<KichThuocDto> pageData = kichThuocService.getAll(pageable);
+        Page<SanPhamDto> pageData = this.sanPhamService.getAll(pageable);
         return ResponseEntity.ok(pageData);
     }
 
@@ -39,21 +39,21 @@ public class KichThuocController {
     ) {
 
         Pageable pageable = PageRequest.of(pageParam, 5);
-        Page<KichThuocDto> pageData = kichThuocService.getAll(pageable);
-        model.addAttribute("KichThuocPageData", pageData);
-        return "admin/kich-thuoc/index";
+        Page<SanPhamDto> pageData = this.sanPhamService.getAll(pageable);
+        model.addAttribute("sanPhamPageData", pageData);
+        return "admin/san-pham/index";
     }
 
     @GetMapping(value = "/create")
     public String create(Model model) {
-        model.addAttribute("kichThuoc", new KichThuocDto());
-        return "admin/kich-thuoc/create";
+        model.addAttribute("sanPham", new SanPhamDto());
+        return "admin/san-pham/create";
     }
 
     @PostMapping(value = "/store")
-    public String store(@ModelAttribute(name = "kichThuoc") KichThuocDto dto) {
-        this.kichThuocService.create(dto);
-        return "redirect:/kich-thuoc/index";
+    public String store(@ModelAttribute(name = "sanPham") SanPhamDto dto) {
+        this.sanPhamService.create(dto);
+        return "redirect:/san-pham/index";
     }
 
     @GetMapping(value = "/edit/{id}")
@@ -61,23 +61,23 @@ public class KichThuocController {
             Model model,
             @PathVariable(name = "id") Integer id) {
 
-        model.addAttribute("kichThuoc", this.kichThuocService.getById(id));
-        return "admin/kich-thuoc/edit";
+        model.addAttribute("sanPham", this.sanPhamService.getById(id));
+        return "admin/san-pham/edit";
     }
 
     @PostMapping(value = "/update/{id}")
     public String update(
             @PathVariable Integer id,
-            @ModelAttribute(name = "kichThuoc") KichThuocDto dto
+            @ModelAttribute(name = "sanPham") SanPhamDto dto
     ) {
-        this.kichThuocService.update(dto, id);
-        return "redirect:/kich-thuoc/index";
+        this.sanPhamService.update(dto, id);
+        return "redirect:/san-pham/index";
     }
 
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable(name = "id") Integer id) {
-        this.kichThuocService.deleteById(id);
-        return "redirect:/kich-thuoc/index";
+        this.sanPhamService.deleteById(id);
+        return "redirect:/san-pham/index";
     }
 }
 
